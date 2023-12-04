@@ -34,7 +34,7 @@ def generate_card(line):
     return int(id), { "winners": winners, "numbers": numbers, "score": 0, "copies": [] }
 
 
-def calculate_score(id, cards, oid):
+def calculate_score(id, cards):
     """Recursively calculate the score of a card.
     
     Using the card id, we can find the cards copies and calculate the score recursively."""
@@ -44,7 +44,7 @@ def calculate_score(id, cards, oid):
         if cid not in cards:
             continue
         
-        score += calculate_score(cid, cards, oid)
+        score += calculate_score(cid, cards)
 
     return score
 
@@ -74,7 +74,7 @@ def main():
     for card in cards:
         score = cards[card]["score"]
         p1score += score if score <= 1 else 2 ** (score-1)
-        p2score += calculate_score(card, cards, card)
+        p2score += calculate_score(card, cards)
 
     print("Part1 - Total score: ", p1score)
     print("Part2 - Total score: ", p2score)
