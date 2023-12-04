@@ -52,10 +52,7 @@ def calculate_score(id, cards, oid):
 def main():
     """Main function."""
     cards = {}
-    total = 0
-
-    tally = {}
-    
+  
     for line in read_input("input"):
         id, card = generate_card(line)
 
@@ -75,11 +72,15 @@ def main():
         cards[id] = card
 
 
+    p1score = 0
+    p2score = 0
     for card in cards:
-        tally[card] = calculate_score(card, cards, card)
-        total += tally[card]
+        score = cards[card]["score"]
+        p1score += score if score <= 1 else 2 ** (score-1)
+        p2score += calculate_score(card, cards, card)
 
-    print("Part2 - Total score: ", total)
+    print("Part1 - Total score: ", p1score)
+    print("Part2 - Total score: ", p2score)
 
 if __name__ == "__main__":
     sys.exit(main())
