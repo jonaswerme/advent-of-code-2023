@@ -60,14 +60,11 @@ def main():
             if winner in card["numbers"]:
                 card["score"] += 1
 
-        if card["score"] == 0:
-            cards[id] = card
-            continue
-        
-        copy_start = id + 1
-
-        for i in range(copy_start, copy_start + card["score"]):            
-            card["copies"].append(i)
+        if card["score"] > 0:
+            copy_start = id + 1
+            
+            for i in range(copy_start, copy_start + card["score"]):            
+                card["copies"].append(i)
 
         cards[id] = card
 
