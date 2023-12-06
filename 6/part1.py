@@ -5,9 +5,6 @@ import os
 import re
 import math
 
-# Example data:
-# Time:      7  15   30
-# Distance:  9  40  200
 
 def read_input(filename):
     """Read a file and return a generator of lines."""
@@ -33,7 +30,16 @@ def extract_numbers(line) -> (list,list):
     return [int(x) for x in line.split(" ") if x]
 
 
-def calculate_wins(time, distance):
+def calculate_wins(time, distance) -> int:
+    """Calculate possible wins for the race
+    
+    Args:
+        time: total time in ms
+        distance: total distance in mm
+
+    Returns:
+        Number of wins
+    """
     print("Distance to beat:", distance, "mm in", time, "ms")
     losses = 0
     races = 0
