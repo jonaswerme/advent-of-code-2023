@@ -68,13 +68,14 @@ def main():
         elif line.startswith("Distance"):
             distances = extract_numbers(line)
     
+    # Part 1
     wins = []
     for time, distance in zip(times, distances):
         wins.append(calculate_wins(time, distance))
 
-    # Calculate score
     print("Part1 - Total score: ", math.prod(wins))
-    
+
+    # Part 2 
     time = int(''.join(str(i) for i in times))
     distance = int(''.join(str(i) for i in distances))
 
