@@ -1,16 +1,21 @@
 #!/bin/python3
+"""
+Advent of Code 2023
+"""
 
-import sys
-import os
 import gc
+import os
+import sys
 from multiprocessing import Pool
+
 
 # This is still bruteforcing the solution but is using multiprocessing to speed up the execution
 def read_input(filename):
     """Read a file and return a generator of lines."""
-    with open(f"{os.path.dirname(__file__)}/{filename}", "r") as f:
+    with open(f"{os.path.dirname(__file__)}/{filename}", "r", encoding="utf-8") as f:
         for line in f:
             yield line.strip()
+
 
 def parse_data(data):
     """Parse the data and return a list of structured items."""
@@ -23,6 +28,7 @@ def parse_data(data):
         "length": int(data[2]),
     }
 
+
 def find_map_match(data, position):
     """Find the instance that matches the next_id."""
     for item in data:
@@ -31,23 +37,34 @@ def find_map_match(data, position):
 
     return {}
 
+
 def generate_plants(seeds, data):
+    """Generate a plant map"""
     plants = {}
     for seed in seeds:
         plants[seed] = {}
         position = seed
-        data_maps = ["seed", "soil", "fertilizer", "water", "light", "temperature", "humidity", "location"]
+        data_maps = [
+            "seed",
+            "soil",
+            "fertilizer",
+            "water",
+            "light",
+            "temperature",
+            "humidity",
+            "location",
+        ]
 
-        for i, data_map in enumerate(data_maps):           
+        for i, data_map in enumerate(data_maps):
             next_map = data_maps[i + 1] if i + 1 < len(data_maps) else None
-            
+
             previous_map = data_maps[i]
             previous_id = position
 
             match = find_map_match(data[next_map], position) if next_map else {}
             if match:
                 position = position - match["start"] + match["next_start"]
-            
+
             plants[seed][data_map] = match
             plants[seed][previous_map]["id"] = previous_id
 
@@ -55,11 +72,17 @@ def generate_plants(seeds, data):
 
 
 def compute_lowest_location(plants):
+    """Extract locations from plants and return the lowest location id"""
     lowest = 0
     for _, metadata in plants.items():
-        lowest = metadata["location"]["id"] if metadata["location"]["id"] < lowest or lowest == 0 else lowest
+        lowest = (
+            metadata["location"]["id"]
+            if metadata["location"]["id"] < lowest or lowest == 0
+            else lowest
+        )
 
     return lowest
+
 
 def main():
     """Main function."""
@@ -68,7 +91,7 @@ def main():
     data_set = ""
     data = {}
     for i, line in enumerate(read_input("input")):
-        if line in ['\n', '\r\n'] or not line:
+        if line in ["\n", "\r\n"] or not line:
             data_set = ""
             continue
         if line.startswith("seeds:"):
@@ -84,7 +107,7 @@ def main():
         if ":" in line:
             data_set = line.split(" ")[0]
             continue
-        
+
         map_name = data_set.split("-")[2].strip()
         if map_name not in data:
             data[map_name] = []
@@ -96,7 +119,7 @@ def main():
 
     lowest = 99999999999999999
     for start, end in seeds2:
-        tmp_list = [item for item in range(start, end)]
+        tmp_list = list(range(start, end))
         params = []
         for i, batch in enumerate(chunk(tmp_list, 1000000)):
             params.append({"data": data, "batch": batch, "count": i})
@@ -112,11 +135,13 @@ def main():
         gc.collect()
 
         print("Lowest", lowest)
-    
+
     print("Part1 - Lowest location: ", compute_lowest_location(plants1))
     print("Part2 - Lowest location: ", lowest)
 
+
 def process(params):
+    """Process a given batch and return the lowest location id found"""
     lowest = 99999999999999
     data = params["data"]
     batch = params["batch"]
@@ -137,10 +162,12 @@ def process(params):
 
 
 def chunk(seq, size):
+    """Chunk a list into smaller lists of given size"""
     for pos in range(0, len(seq), size):
-        yield seq[pos:pos + size]
-    
-    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+        yield seq[pos : pos + size]
+
+    return (seq[pos : pos + size] for pos in range(0, len(seq), size))
+
 
 if __name__ == "__main__":
     sys.exit(main())

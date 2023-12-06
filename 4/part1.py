@@ -1,22 +1,26 @@
 #!/bin/python3
+"""
+Advent of Code 2023
+"""
 
-import sys
 import os
-import re
+import sys
+from typing import Tuple
+
 
 def read_input(filename):
     """Read a file and return a generator of lines."""
-    with open(f"{os.path.dirname(__file__)}/{filename}", "r") as f:
+    with open(f"{os.path.dirname(__file__)}/{filename}", "r", encoding="utf-8") as f:
         for line in f:
             yield line.strip()
 
-# Extract numbers from string as a list
-def extract_numbers(line) -> (list,list):
+
+def extract_numbers(line) -> Tuple[list, list]:
     """Extract numbers from a string and return a list of numbers.
-    
+
     Args:
         line: string to extract numbers from.
-        
+
     Returns:
             A tuple of two lists, first is are the winning numbers and second is our numbers.
     """
@@ -28,17 +32,17 @@ def extract_numbers(line) -> (list,list):
 
     # Split numbers into two lists and remove empty strings
     data = line.split("|")
-    winners = [ i for i in data[0].split(" ") if i]
-    numbers = [ i for i in data[1].split(" ") if i]
+    winners = [i for i in data[0].split(" ") if i]
+    numbers = [i for i in data[1].split(" ") if i]
 
     return winners, numbers
-    
+
 
 def main():
     """Main function."""
     winners = []
     total = 0
-    
+
     for i, line in enumerate(read_input("input")):
         winners, numbers = extract_numbers(line)
         score = 0
@@ -51,7 +55,7 @@ def main():
         total += score
 
     print("Part1 - Total score: ", total)
-        
-            
+
+
 if __name__ == "__main__":
     sys.exit(main())
