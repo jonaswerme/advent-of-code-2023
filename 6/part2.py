@@ -1,28 +1,29 @@
 #!/bin/python3
+"""
+Advent of Code 2023
+"""
 
-import sys
-import os
-import re
 import math
+import os
+import sys
+
 
 def read_input(filename):
     """Read a file and return a generator of lines."""
-    with open(f"{os.path.dirname(__file__)}/{filename}", "r") as f:
+    with open(f"{os.path.dirname(__file__)}/{filename}", "r", encoding="utf-8") as f:
         for line in f:
             yield line.strip()
 
-# Extract numbers from string as a list
-def extract_numbers(line) -> (list,list):
+
+def extract_numbers(line) -> list:
     """Extract numbers from a string and return a list of numbers.
-    
+
     Args:
         line: string to extract numbers from.
-        
+
     Returns:
             A list of our numbers.
     """
-    numbers = []
-
     # Remove metadata and keep numbers
     line = line.split(":")[1].strip()
 
@@ -31,7 +32,7 @@ def extract_numbers(line) -> (list,list):
 
 def calculate_wins(time, distance) -> int:
     """Calculate possible wins for the race
-    
+
     Args:
         time: total time in ms
         distance: total distance in mm
@@ -48,10 +49,10 @@ def calculate_wins(time, distance) -> int:
         races += 1
         speed = hold_time * acceleration_per_ms
         travel_time = time - hold_time
-        
+
         if speed * travel_time <= distance:
             losses += 1
-    
+
     return races - losses
 
 
@@ -59,15 +60,14 @@ def main():
     """Main function."""
     times = []
     distances = []
-    total = 0
-    
+
     # Handle input
-    for i, line in enumerate(read_input("input")):
+    for line in read_input("input"):
         if line.startswith("Time"):
             times = extract_numbers(line)
         elif line.startswith("Distance"):
             distances = extract_numbers(line)
-    
+
     # Part 1
     wins = []
     for time, distance in zip(times, distances):
@@ -75,9 +75,9 @@ def main():
 
     print("Part1 - Total score: ", math.prod(wins))
 
-    # Part 2 
-    time = int(''.join(str(i) for i in times))
-    distance = int(''.join(str(i) for i in distances))
+    # Part 2
+    time = int("".join(str(i) for i in times))
+    distance = int("".join(str(i) for i in distances))
 
     print("Part2 - Total score:", calculate_wins(time, distance))
 
