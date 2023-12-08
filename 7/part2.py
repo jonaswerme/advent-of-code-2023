@@ -179,7 +179,7 @@ def main():
     for i, hand in enumerate(hands):
         total += hand.bid * (i + 1)
 
-    print("Part1 - Total score: ", total)
+    print("Part2 - Total score: ", total)
 
 
 if __name__ == "__main__":
