@@ -1,0 +1,19 @@
+    # Rules:
+    # A is always highest card, never lowest
+    # 5 of a kind > 4 of a kind > full house > straight > 3 of a kind > 2 pairs > 1 pair > high card
+    # If two hands are of the same type, reading from left to right, the hand with the
+    # higher top card wins.
+
+    # Bidding:
+    # Bids are available for each hand given
+    # The hand is ranked based on how strong it is where lowest rank is number 1 and highest is
+    # the amount of hands given
+    # The bid is multiplied by the rank of the hand to get the amount won
+
+    # Approach:
+    # Use card and hand classes to represent the data
+    # Score the cards for card vs card comparison
+    # Assign a power of the hand based on the rules
+    # Create sorting rules in the classes (__lt__, __gt__, __eq__)
+    # Sort the hands based on power and score
+    # Calculate winnings
