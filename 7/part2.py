@@ -153,11 +153,10 @@ class Hand:
         # If we have a four of a kind and a joker we will have a five of a kind
         # The joker will still be counted as lowest in the comparison (as rules define)
 
-        if jokers:
-            if not power:
-                power.append(jokers)  # Corner case where we only have only jokers
-            else:
-                power[0] += jokers
+        if not power: # Corner case where we only have only jokers
+            power.append(jokers)  
+        else:
+            power[0] += jokers
         return power
 
 
